@@ -13,3 +13,16 @@
 
 * Method
     * POST
+
+* DB
+    * tests
+        * name char(60)
+        * year int
+        * grade int
+        * semester char(10)
+        * subject char(30)
+        * test_range char(200)
+        * teacher char(20)
+    * test
+        * page int key
+        * src char(200) (ex. url + name + page)
