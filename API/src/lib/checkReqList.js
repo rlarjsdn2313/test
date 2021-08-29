@@ -35,18 +35,18 @@ var checkReqList = (req, neededList) => {
                 // subject
                 else if (neededList[i] == 'subject') {
                     var subjects = ['수학', '과학', '사회', '역사', '정보', '사회', '체육', '음악', '한문', '미술', '영어', '국어', '도덕']
-                    if (!(req[reqList[a]] in subjects)) {
+                    if (!(subjects.includes(req[reqList[a]]))) {
                         return false;
                     }
                 }
 
                 // year
                 else if (neededList[i] == 'year') {
-                    if (typeof(year) != 'number') {
+                    if (typeof(req[reqList[a]]) != 'number') {
                         return false;
                     }
                 }
-                
+
                 check = true;
                 break;
             }

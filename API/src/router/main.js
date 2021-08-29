@@ -10,9 +10,7 @@ router.post('/', (req, res) => {
     /*
     1. check ReqList
     */
-    if (!checkReqList(
-        Object.keys(req.body),
-        ['grade', 'semester', 'exam', 'subject', 'year'])) {
+    if (!checkReqList(req.body, ['grade', 'semester', 'exam', 'subject', 'year'])) {
         res.send({
             error: true,
             message: 'Request Error'
@@ -21,7 +19,6 @@ router.post('/', (req, res) => {
         return;
     }
 });
-
 
 // export router
 module.exports = router;
