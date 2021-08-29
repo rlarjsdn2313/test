@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 
 // import router
 const main = require('./router/main');
+const image = require('./router/image');
 
 // listening port
 const port = 3000;
@@ -16,6 +17,7 @@ app.use(bodyParser());
 
 //use router
 app.use('/api', main);
+app.use('/api/image', image);
 
 
 // listening
