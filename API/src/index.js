@@ -2,8 +2,20 @@
 const express = require('express');
 const app = express();
 
+// import body-parser
+const bodyParser = require('body-parser');
+
+// import router
+const main = require('./router/main');
+
 // listening port
 const port = 3000;
+
+// use body-parser
+app.use(bodyParser());
+
+//use router
+app.use('/api', main);
 
 
 // listening
