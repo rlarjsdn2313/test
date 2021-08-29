@@ -1,5 +1,3 @@
-const e = require("express");
-
 var checkReqList = (req, neededList) => {
     let reqList = Object.keys(req);
 
@@ -11,24 +9,24 @@ var checkReqList = (req, neededList) => {
                 // grade
                 if (neededList[i] == 'grade') {
                     if (typeof(req[reqList[a]]) != 'number') {
-                        return false;
+                        req[reqList[a]] = '';
                     }
                     else if (!(1<=req[reqList[a]]<=3)) {
-                        return false;
+                        req[reqList[a]] = '';
                     }
                 }
 
                 // semester
                 else if (neededList[i] == 'semester') {
                     if (req[reqList[a]] != '1st' && req[reqList[a]] != '2nd') {
-                        return false;
+                        req[reqList[a]] = '';
                     }
                 }
 
                 // exam
                 else if (neededList[i] == 'exam') {
                     if (req[reqList[a]] != 'midterm' && req[reqList[a]] != 'final') {
-                        return false;
+                        req[reqList[a]] = '';
                     }
                 }
 
@@ -36,14 +34,25 @@ var checkReqList = (req, neededList) => {
                 else if (neededList[i] == 'subject') {
                     var subjects = ['수학', '과학', '사회', '역사', '정보', '사회', '체육', '음악', '한문', '미술', '영어', '국어', '도덕']
                     if (!(subjects.includes(req[reqList[a]]))) {
-                        return false;
+                        req[reqList[a]] = '';
                     }
                 }
 
                 // year
                 else if (neededList[i] == 'year') {
                     if (typeof(req[reqList[a]]) != 'number') {
-                        return false;
+                        req[reqList[a]] = '';
+                    }
+                }
+
+                // teacher
+                else if (neededList[i] == 'teacher') {
+                    if (typeof(req[reqList[a]] != 'string')) {
+                        req[reqList[a]] = '';
+                    }
+
+                    else if (2<=req[reqList[a]].length<=3) {
+                        req[reqList[a]] = '';
                     }
                 }
 
@@ -53,11 +62,11 @@ var checkReqList = (req, neededList) => {
         }
 
         if (!check) {
-            return false;
+            return [req, false];
         }
     }
 
-    return true;
+    return [req, true];
 }
 
 exports.checkReqList = checkReqList;
