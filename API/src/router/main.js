@@ -31,51 +31,64 @@ router.post('/', (req, res) => {
     let connection = createConn.createConnection();
     connection.connect();
 
-    var v = 'WHERE ';
+    var possible = [];
     for (var i=0; i<neededKey.length; i++) {
         if (data[neededKey[i]] == '') {
             continue;
         }
-        if (i == neededKey.length - 2) {
+        possible.push(neededKey[i]);
+    }
+
+    for (var i=0; i<possible.length; i++) {
+
+        var v = 'WHERE ';
+        if (i == possible.length - 1) {
             if (typeof(data[neededKey[i]]) == 'string') {
-                v += `${neededKey[i]}='${data[neededKey[i]]}'`;
+                v += `${possible[i]}='${data[possible[i]]}'`;
             } else {
-                v += `${neededKey[i]}=${data[neededKey[i]]}`;
+                v += `${possible[i]}=${data[possible[i]]}`;
             }
         } else {
-            if (typeof(data[neededKey[i]]) == 'string') {
-                v += `${neededKey[i]}='${data[neededKey[i]]}' and `;
+            if (typeof(data[possible[i]]) == 'string') {
+                v += `${possible[i]}='${data[possible[i]]}' and `;
             } else {
-                v += `${neededKey[i]}=${data[neededKey[i]]} and `;
+                v += `${possible[i]}=${data[possible[i]]} and `;
             }
         }
 
     }
 
-    connection.query(`SELECT * FROM tests ${v};`, (err, result) => {
-        if (err) throw err;
 
-        let testList = [];
-
-        for (var i=0; i<result.length; i++) {
-
-            testList.push(
-                {
-                    name: result[i]['name'],
-                    pages: fs.readdirSync('./data/').length,
-                    year: result[i]['year'],
-                    grade: result[i]['grade'],
-                    semester: result[i]['semester'],
-                    subject: result[i]['subject'],
-                    test_range: result[i]['test_range'],
-                    teacher: result[i]['teacher'],
-                    exam: result[i]['exam']
-                }
-            );
-        }
-        res.send({testList: testList});
+    try {
+        connection.query(`SELECT * FROM tests ${v};`, (err, result) => {
+            if (err) {
+                return;
+            }
+            let testList = [];
+    
+            for (var i=0; i<result.length; i++) {
+    
+                testList.push(
+                    {
+                        name: result[i]['name'],
+                        pages: fs.readdirSync('./data/' + result[i]['name']).length,
+                        year: result[i]['year'],
+                        grade: result[i]['grade'],
+                        semester: result[i]['semester'],
+                        subject: result[i]['subject'],
+                        teacher: result[i]['teacher'],
+                        exam: result[i]['exam']
+                    }
+                );
+            }
+            res.send({testList: testList});
+            return;
+        });
+    } catch {
+        res.send({testList: []});
         return;
-    });
+    }
+
 });
 
 

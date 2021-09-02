@@ -5,6 +5,9 @@ const app = express();
 // import body-parser
 const bodyParser = require('body-parser');
 
+// import cors
+const cors = require('cors');
+
 // import router
 const main = require('./router/main');
 const image = require('./router/image');
@@ -14,6 +17,9 @@ const port = 3000;
 
 // use body-parser
 app.use(bodyParser());
+
+// use cors
+app.use(cors());
 
 //use router
 app.use('/api', main);
